@@ -20,4 +20,13 @@ const getFlavors = async() => {
   }
 }
 
-module.exports = { createFlavor, getFlavors }
+const getSpecificFlavor = async(id) => {
+  try {
+    const { rows } = await client.query (`SELECT * FROM flavors WHERE id=${id}`);
+    return rows;
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+module.exports = { createFlavor, getFlavors, getSpecificFlavor }
