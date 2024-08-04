@@ -1,7 +1,7 @@
 const client = require('./db/client.cjs');
 const express = require('express');
 const app = express();
-const { getFlavors } = require('./db/flavors.cjs');
+const { getFlavors, getSpecificFlavor } = require('./db/flavors.cjs');
 
 client.connect();
 
@@ -9,6 +9,16 @@ app.get('/api/v1/flavors', async(req, res, next) => {
   try {
     const flavors = await getFlavors();
     res.send(flavors);
+  } catch(e) {
+    console.log(e);
+  }
+})
+
+app.get(`/api/v1/flavors/:id`, async(req, res, next) => {
+  try {
+    const { id } = req.params;
+    const specificFlavor = await getSpecificFlavor(id);
+    res.send(specificFlavor);
   } catch(e) {
     console.log(e);
   }
