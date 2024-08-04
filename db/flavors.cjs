@@ -2,10 +2,12 @@ const client = require('./client.cjs')
 
 const createFlavor = async(name, is_favorite) => {
   try {
-    await client.query (`
+    const { rows } = await client.query (`
       INSERT INTO flavors (name, is_favorite)
-      VALUES ('${name}', '${is_favorite}');
+      VALUES ('${name}', '${is_favorite}')
+      RETURNING *;
     `);
+    return rows;
   } catch(e) {
     console.log(e);
   }

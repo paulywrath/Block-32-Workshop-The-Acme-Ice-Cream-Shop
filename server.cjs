@@ -1,7 +1,7 @@
 const client = require('./db/client.cjs');
 const express = require('express');
 const app = express();
-const { getFlavors, getSpecificFlavor } = require('./db/flavors.cjs');
+const { getFlavors, getSpecificFlavor, createFlavor } = require('./db/flavors.cjs');
 
 client.connect();
 
@@ -23,6 +23,15 @@ app.get(`/api/v1/flavors/:id`, async(req, res, next) => {
     console.log(e);
   }
 })
+
+app.post('/api/v1/flavors'), async(req, res, next) => {
+  try {
+    const newFlavor = await createFlavor(`strawberry`, false);
+    res.send(newFlavor);
+  } catch(e) {
+    console.log(e);
+  }
+}
 
 
 const PORT = process.env.port || 3000;
