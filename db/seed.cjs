@@ -1,4 +1,5 @@
 const client = require('./client.cjs');
+const { createFlavor } = require('./flavors.cjs');
 
 const dropTables = async() => {
   try {
@@ -14,9 +15,9 @@ const createTables = async() => {
       CREATE TABLE flavors (
         id SERIAL PRIMARY KEY,
         name VARCHAR(20) NOT NULL UNIQUE,
-        is_favorite BOOLEAN,
-        created_at TIMESTAMP NOT NULL,
-        updated_at TIMESTAMP NOT NULL
+        is_favorite BOOLEAN NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP
       );
     `)
   } catch(e) {
@@ -33,6 +34,12 @@ const syncAndSeed = async() => {
 
   await createTables();
   console.log(`created tables`);
+
+  await createFlavor(`chocolate`, true);
+  console.log(`created first flavor`);
+
+  await createFlavor(`vanilla`, false);
+  console.log(`created second flavor`);
 
   await client.end();
   console.log(`disconnected`);
