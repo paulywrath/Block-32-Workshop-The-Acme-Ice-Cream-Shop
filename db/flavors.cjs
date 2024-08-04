@@ -11,4 +11,13 @@ const createFlavor = async(name, is_favorite) => {
   }
 }
 
-module.exports = { createFlavor }
+const getFlavors = async() => {
+  try {
+    const { rows } = await client.query (`SELECT * FROM flavors;`);
+    return rows;
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+module.exports = { createFlavor, getFlavors }
