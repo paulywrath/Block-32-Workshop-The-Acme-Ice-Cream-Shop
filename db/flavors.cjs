@@ -29,4 +29,12 @@ const getSpecificFlavor = async(id) => {
   }
 }
 
-module.exports = { createFlavor, getFlavors, getSpecificFlavor }
+const deleteSpecificFlavor = async(id) => {
+  try {
+    await client.query (`DELETE FROM flavors WHERE id=${id}`);
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+module.exports = { createFlavor, getFlavors, getSpecificFlavor, deleteSpecificFlavor }
