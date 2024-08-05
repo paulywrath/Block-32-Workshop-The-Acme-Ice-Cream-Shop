@@ -1,9 +1,11 @@
 const client = require('./db/client.cjs');
 const express = require('express');
 const app = express();
-const { getFlavors, getSpecificFlavor, deleteSpecificFlavor } = require('./db/flavors.cjs');
+const { getFlavors, getSpecificFlavor, deleteSpecificFlavor, createFlavor } = require('./db/flavors.cjs');
 
 client.connect();
+
+app.use(express.json())
 
 app.get('/api/v1/flavors', async(req, res, next) => {
   try {
@@ -33,6 +35,15 @@ app.delete(`/api/v1/flavors/:id`, async(req, res, next) => {
   }
 })
 
+app.post('/api/v1/flavors', async(req, res, next) => {
+  try {
+    const { flavorName, isFavorite } = req.body;
+    const newFlavor = await createFlavor(flavorName, isFavorite);
+    res.send(newFlavor);
+  } catch(e) {
+    next(e);
+  }
+})
 
 const PORT = process.env.port || 3000;
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
