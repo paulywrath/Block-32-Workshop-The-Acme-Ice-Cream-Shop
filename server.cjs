@@ -5,6 +5,8 @@ const { getFlavors, getSpecificFlavor, deleteSpecificFlavor, createFlavor } = re
 
 client.connect();
 
+app.use(express.json())
+
 app.get('/api/v1/flavors', async(req, res, next) => {
   try {
     const flavors = await getFlavors();
@@ -33,15 +35,15 @@ app.delete(`/api/v1/flavors/:id`, async(req, res, next) => {
   }
 })
 
-app.post('/api/v1/flavors'), async(req, res, next) => {
+app.post('/api/v1/flavors', async(req, res, next) => {
   try {
-    const newFlavor = await createFlavor(`strawberry`, false);
+    const { flavorName, isFavorite } = req.body;
+    const newFlavor = await createFlavor(flavorName, isFavorite);
     res.send(newFlavor);
   } catch(e) {
-    console.log(e);
+    next(e);
   }
-}
-
+})
 
 const PORT = process.env.port || 3000;
 app.listen(PORT, () => console.log(`listening on ${PORT}`));

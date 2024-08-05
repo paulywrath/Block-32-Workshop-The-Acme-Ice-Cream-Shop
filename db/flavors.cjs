@@ -9,7 +9,7 @@ const createFlavor = async(name, is_favorite) => {
     `);
     return rows;
   } catch(e) {
-    console.log(e);
+     return e;
   }
 }
 
