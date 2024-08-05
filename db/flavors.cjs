@@ -13,6 +13,20 @@ const createFlavor = async(name, is_favorite) => {
   }
 }
 
+const updateFlavor = async(id, name, is_favorite) => {
+  try {
+    const { rows } = await client.query (`
+      UPDATE flavors
+      SET name='${name}', is_favorite='${is_favorite}', updated_at=CURRENT_TIMESTAMP
+      WHERE id=${id}
+      RETURNING *;
+    `);
+    return rows;
+  } catch(e) {
+     return e;
+  }
+}
+
 const getFlavors = async() => {
   try {
     const { rows } = await client.query (`SELECT * FROM flavors;`);
@@ -39,4 +53,4 @@ const deleteSpecificFlavor = async(id) => {
   }
 }
 
-module.exports = { createFlavor, getFlavors, getSpecificFlavor, deleteSpecificFlavor }
+module.exports = { createFlavor, getFlavors, getSpecificFlavor, deleteSpecificFlavor, updateFlavor }

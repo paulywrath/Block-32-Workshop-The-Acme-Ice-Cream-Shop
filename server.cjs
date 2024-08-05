@@ -1,7 +1,7 @@
 const client = require('./db/client.cjs');
 const express = require('express');
 const app = express();
-const { getFlavors, getSpecificFlavor, deleteSpecificFlavor, createFlavor } = require('./db/flavors.cjs');
+const { getFlavors, getSpecificFlavor, deleteSpecificFlavor, createFlavor, updateFlavor } = require('./db/flavors.cjs');
 
 client.connect();
 
@@ -40,6 +40,17 @@ app.post('/api/v1/flavors', async(req, res, next) => {
     const { flavorName, isFavorite } = req.body;
     const newFlavor = await createFlavor(flavorName, isFavorite);
     res.send(newFlavor);
+  } catch(e) {
+    next(e);
+  }
+})
+
+app.put(`/api/v1/flavors/:id`, async(req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { flavorName, isFavorite } = req.body;
+    const changedFlavor = await updateFlavor(id, flavorName, isFavorite);
+    res.send(changedFlavor);
   } catch(e) {
     next(e);
   }
